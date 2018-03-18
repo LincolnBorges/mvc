@@ -1,11 +1,9 @@
 <?php
-/**
- * Rotas
- */
+
+namespace Core;
 
 class Router
 {
-
     /**
      * Array das rotas (tabela de rotas)
      * @var array
@@ -97,5 +95,65 @@ class Router
     public function getParams()
     {
         return $this->params;
+    }
+
+    /**
+     * Dispacha a rota, criando o objeto do controller e rodando o metodo action
+     *
+     * @param string $url URL da rota
+     *
+     * @return void
+     */
+    public function dispatch($url)
+    {
+        if ($this->match($url)) {
+            $controller = $this->params['controller'];
+            $controller = $this->convertToStudlyCaps($controller);
+            //Assim fica dinâmico dar o load no namespace do controller para chamar seus métodos
+            $controller = "App\Controllers\\$controller";
+
+            if (class_exists($controller)) {
+                $controller_object = new $controller();
+
+                $action = $this->params['action'];
+                $action = $this->convertToCamelCase($action);
+
+                if (is_callable([$controller_object, $action])) {
+                    $controller_object->$action();
+                } else {
+                    echo "Método $action (no controller $controller) não foi encontrado";
+                }
+            } else {
+                echo "Controller class $controller não foi encontrado";
+            }
+        } else {
+            echo 'Rota não encontrada.';
+        }
+    }
+
+    /**
+     * Converte strings com hifens para StudlyCaps (PSR-1),
+     * ex. post-authors => PostAuthors
+     *
+     * @param string $string String a ser convertido
+     *
+     * @return string
+     */
+    protected function convertToStudlyCaps($string)
+    {
+        return str_replace(' ', '', ucwords(str_replace('-', ' ', $string)));
+    }
+
+    /**
+     * Converte strings com hifens para camelCase,
+     * ex. add-new => addNew
+     *
+     * @param string $string String a ser convertido
+     *
+     * @return string
+     */
+    protected function convertToCamelCase($string)
+    {
+        return lcfirst($this->convertToStudlyCaps($string));
     }
 }
