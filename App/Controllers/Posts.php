@@ -4,31 +4,32 @@ namespace App\Controllers;
 
 class Posts extends \Core\Controller
 {
-
     /**
+     * Show the index page
      *
      * @return void
      */
-    public function index()
+    public function indexAction()
     {
-        echo 'Método index';
-        var_dump($_GET);
+        echo 'index';
     }
 
     /**
+     * Show the add new page
      *
      * @return void
      */
-    public function addNew()
+    public function addNewAction()
     {
-        echo 'Método addNew';
+        echo 'addnew';
     }
 
     /**
+     * Show the edit page
      *
      * @return void
      */
-    public function edit()
+    public function editAction()
     {
         var_dump($this->route_params);
     }

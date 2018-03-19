@@ -115,15 +115,15 @@ class Router
 
             if (class_exists($controller)) {
                 $controller_object = new $controller($this->params);
-
                 $action = $this->params['action'];
                 $action = $this->convertToCamelCase($action);
-
-                if (is_callable([$controller_object, $action])) {
-                    $controller_object->$action();
-                } else {
-                    echo "Método $action (no controller $controller) não foi encontrado";
-                }
+                // Medida de seguranca
+                // Caso o usuário espertinho saiba como funciona as classes do sistema
+                // E tenta entrar diretamente com o Sufixo "Action"
+                // Ele conseguria acesso ao metodo sem passar pelo "before"
+                // Entao e melhor remover caso houver o sufixo "action"
+                $action = preg_replace('/action$/i', "", $action);
+                $controller_object->$action();
             } else {
                 echo "Controller class $controller não foi encontrado";
             }
