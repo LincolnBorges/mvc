@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class Posts
+class Posts extends \Core\Controller
 {
 
     /**
@@ -12,6 +12,7 @@ class Posts
     public function index()
     {
         echo 'Método index';
+        var_dump($_GET);
     }
 
     /**
@@ -21,5 +22,14 @@ class Posts
     public function addNew()
     {
         echo 'Método addNew';
+    }
+
+    /**
+     *
+     * @return void
+     */
+    public function edit()
+    {
+        var_dump($this->route_params);
     }
 }

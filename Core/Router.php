@@ -106,6 +106,7 @@ class Router
      */
     public function dispatch($url)
     {
+        $url = $this->removeQueryStringVariables($url);
         if ($this->match($url)) {
             $controller = $this->params['controller'];
             $controller = $this->convertToStudlyCaps($controller);
@@ -113,7 +114,7 @@ class Router
             $controller = "App\Controllers\\$controller";
 
             if (class_exists($controller)) {
-                $controller_object = new $controller();
+                $controller_object = new $controller($this->params);
 
                 $action = $this->params['action'];
                 $action = $this->convertToCamelCase($action);
@@ -155,5 +156,38 @@ class Router
     protected function convertToCamelCase($string)
     {
         return lcfirst($this->convertToStudlyCaps($string));
+    }
+
+    /**
+     * Remove qualquer query string, pois precisamos apenas do controller e do método
+     * lidando com essa query string mais tarde.
+     * exemplo:
+     *
+     *   URL                           $_SERVER['QUERY_STRING']  Rota
+     *   -------------------------------------------------------------------
+     *   localhost                     ''                        ''
+     *   localhost/?                   ''                        ''
+     *   localhost/?page=1             page=1                    ''
+     *   localhost/posts?page=1        posts&page=1              posts
+     *   localhost/posts/index         posts/index               posts/index
+     *   localhost/posts/index?page=1  posts/index&page=1        posts/index
+     *
+     * @param string $url String do URL
+     *
+     * @return string da URL só que sem a query
+     */
+    protected function removeQueryStringVariables($url)
+    {
+        if ($url != '') {
+            $parts = explode('&', $url, 2);
+
+            if (strpos($parts[0], '=') === false) {
+                $url = $parts[0];
+            } else {
+                $url = '';
+            }
+        }
+
+        return $url;
     }
 }
