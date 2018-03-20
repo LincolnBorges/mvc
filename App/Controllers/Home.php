@@ -31,10 +31,9 @@ class Home extends \Core\Controller
      */
     public function indexAction()
     {
-        //echo 'Testando';
         $args = [
             'nome' => 'Lincoln',
-            'tipo' => ['Alto','Gostoso']
+            'tipo' => ['<b>Alto</b>','Gostosão']
         ];
         View::render('Home/index.php', $args);
     }
