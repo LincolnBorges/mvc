@@ -111,7 +111,8 @@ class Router
             $controller = $this->params['controller'];
             $controller = $this->convertToStudlyCaps($controller);
             //Assim fica dinâmico dar o load no namespace do controller para chamar seus métodos
-            $controller = "App\Controllers\\$controller";
+            //$controller = "App\Controllers\\$controller";
+            $controller = $this->getNamespace().$controller;
 
             if (class_exists($controller)) {
                 $controller_object = new $controller($this->params);
@@ -189,5 +190,23 @@ class Router
         }
 
         return $url;
+    }
+
+    /**
+     * Pega o namespace da classe do controller.
+     * O namespace definido no parametro da rota e adicionado
+     * caso estiver presente.
+     *
+     * @return string URL
+     */
+    protected function getNamespace()
+    {
+        $namespace = 'App\Controllers\\';
+
+        if (array_key_exists('namespace', $this->params)) {
+            $namespace .= $this->params['namespace'] . '\\';
+        }
+
+        return $namespace;
     }
 }
