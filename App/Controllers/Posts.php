@@ -2,21 +2,21 @@
 
 namespace App\Controllers;
 
+use \Core\View;
+use \App\Models\Post;
+
 class Posts extends \Core\Controller
 {
     /**
-     * Show the index page
-     *
      * @return void
      */
     public function indexAction()
     {
-        echo 'index';
+        $args['posts'] = Post::getAll();
+        View::render('Posts/index.php', $args);
     }
 
     /**
-     * Show the add new page
-     *
      * @return void
      */
     public function addNewAction()
@@ -25,8 +25,6 @@ class Posts extends \Core\Controller
     }
 
     /**
-     * Show the edit page
-     *
      * @return void
      */
     public function editAction()

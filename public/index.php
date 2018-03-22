@@ -11,6 +11,12 @@ spl_autoload_register(function ($class) {
     }
 });
 
+/**
+ * Error e Exception customizado
+ */
+set_error_handler('Core\Error::errorHandler');
+set_exception_handler('Core\Error::exceptionHandler');
+
 $router = new Core\Router();
 
 $router->add('', ['controller' => 'Home', 'action' => 'index']);

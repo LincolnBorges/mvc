@@ -126,10 +126,10 @@ class Router
                 $action = preg_replace('/action$/i', "", $action);
                 $controller_object->$action();
             } else {
-                echo "Controller class $controller não foi encontrado";
+                throw new \Exception("Controller class $controller não foi encontrado");
             }
         } else {
-            echo 'Rota não encontrada.';
+            throw new \Exception('Rota não encontrada.');
         }
     }
 

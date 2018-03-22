@@ -46,7 +46,7 @@ abstract class Controller
                 $this->after();
             }
         } else {
-            echo "Método $method (no controller ".get_class($this).") não foi encontrado ";
+            throw new \Exception("Método $method (no controller ".get_class($this).") não foi encontrado");
         }
     }
 
