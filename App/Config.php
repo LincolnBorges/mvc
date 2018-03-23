@@ -28,4 +28,10 @@ class Config
      * @var string
      */
     const DB_PASSWORD = '';
+
+    /**
+     * Mostra ou oculta os erros
+     * @var boolean
+     */
+    const SHOW_ERRORS = true;
 }
